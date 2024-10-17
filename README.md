@@ -4,7 +4,9 @@
 
 ## Instrucciones
 -- para el login usé "email" como usuario y "username" como contraseña, de la ruta /users de la api.
+
 -- para el titulo y descripcion de los proyectos usé titulo:company.name y descripcion:company.catchphrase.
+
 -- el proyecto es intuitivo no creo que haya la necesidad de explicar mas a detalle su usabilidad.
 
 
