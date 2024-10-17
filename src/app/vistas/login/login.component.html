@@ -1,0 +1,26 @@
+
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="assets/loginIM.webp" id="icon" alt="User Icon" />
+    </div>
+
+    <!-- (ngSubmit)="onLogin(loginForm.getRawValue())" -->
+    <form (ngSubmit)="onLogin()">
+      <input type="text" id="login" class="fadeIn second" placeholder="login" [(ngModel)]="email" name="email">
+      <input type="password" id="password" class="fadeIn third" placeholder="password" [(ngModel)]="username" name="username">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+      <!-- routerLink="/dashboard" -->
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div class="alert alert-danger" *ngIf="errorStatus">
+      <p>{{ errorMsj }}</p>
+    </div>
+
+  </div>
+</div>
+

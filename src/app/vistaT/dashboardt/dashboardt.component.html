@@ -1,0 +1,167 @@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<!-- <app-header></app-header> -->
+<nav class="navbar navbar-dark bg-dark">
+    <span class="navbar-text">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      Consumir API
+    </span>
+    <form class="d-flex">
+      <button type="button" (click)="salir()" class="btn btn-outline-danger me-3">Log Out</button>
+    </form>
+  </nav>
+<br>
+
+<body>
+
+<div class="container">
+
+    <h3>Lista de tareas</h3><br>
+
+    <button type="button" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#nuevoModal">Nueva Tarea</button>
+    <button type="button" class="btn btn-secondary" (click)="volver()">Volver</button>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#Id</th>
+            <th scope="col">Titulo</th>
+            <th scope="col">Completado</th>
+            <th scope="col">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let tarea of tareas">
+            <th scope="row">{{ tarea.id }}</th>
+            <td>{{ tarea.title }}</td>
+            <td>
+                <i  *ngIf="tarea.completed" title="Completo" class="fa-solid fa-check fa-xl" style="color: #00ff1e;"></i>
+                <i  *ngIf="!tarea.completed" title="Incompleto" class="fa-solid fa-x fa-xl" style="color: #ff0000;"></i>
+            </td>
+            <td>
+                <button class="btn btn-danger me-2" id="btnEliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal" (click)="selecionEliminar(tarea.id)" title="Eliminar Tarea"><i class="fa-solid fa-x"></i></button>
+                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editarModal" (click)="selecionEditar(tarea.id)" title="Editar Tarea"><i class="fa-solid fa-pencil"></i></button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+<br><br><br><br>
+
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
+        </div>
+        <div class="modal-body">
+          <p>Seguro deseas eliminar este registro?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="btnConfirm" class="btn btn-primary" data-bs-dismiss="modal" (click)="eliminar()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Modal Editar -->
+<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editarform" >
+            <div>
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Titulo:</label>
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" formControlName="title" required></textarea>
+                <div *ngIf="editarform.get('title')?.invalid">
+                  <small class="text-danger">El título es requerido</small>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Estado:</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend" id="checkImp">
+                      <div class="input-group-text">
+                        <input type="checkbox" class="me-2" #check formControlName="completed" aria-label="Checkbox for following text input">
+                        <label *ngIf="check.checked" class="form-check-label" for="flexCheckDefault">Completo</label>
+                        <label *ngIf="!check.checked" class="form-check-label" for="flexCheckDefault">Incompleto</label>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>  
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="editarform.invalid" (click)="editarTarea(editarform.getRawValue())">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Modal Nuevo -->
+<div class="modal fade" id="nuevoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="nuevoform">
+            <div>
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Titulo:</label>
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" formControlName="title" required></textarea>
+                <div *ngIf="nuevoform.get('title')?.invalid && nuevoform.get('title')?.touched">
+                  <small class="text-danger">El título es requerido</small>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Estado:</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend" id="checkImp">
+                      <div class="input-group-text">
+                        <input type="checkbox" class="me-2" #check2 formControlName="completed" aria-label="Checkbox for following text input">
+                        <label *ngIf="check2.checked" class="form-check-label" for="flexCheckDefault">Completo</label>
+                        <label *ngIf="!check2.checked" class="form-check-label" for="flexCheckDefault">Incompleto</label>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>  
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="nuevoform.invalid" (click)="postForm(editarform.getRawValue())">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+
+<footer>
+    ilian Moises Maussa Ramos
+</footer>
+
+<!-- <app-footer></app-footer> -->

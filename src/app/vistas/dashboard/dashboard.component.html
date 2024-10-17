@@ -1,0 +1,146 @@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<!-- <app-header></app-header> -->
+<nav class="navbar navbar-dark bg-dark">
+  <span class="navbar-text">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Consumir API
+  </span>
+  <form class="d-flex">
+    <button type="button" (click)="salir()" class="btn btn-outline-danger me-3">Log Out</button>
+  </form>
+</nav>
+<br>
+
+<body>
+
+<div class="container">
+
+    <h3>Lista de proyectos</h3><br>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal" >Nuevo Proyecto</button>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#Id</th>
+            <th scope="col">titulo</th>
+            <th scope="col">descripcion</th>
+            <th scope="col">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let proyecto of proyectos">
+            <th scope="row">{{ proyecto.id }}</th>
+            <td>{{ proyecto.company.name }}</td>
+            <td>{{ proyecto.company.catchPhrase }}</td>
+            <td>
+                <button class="btn btn-danger me-2" id="btnEliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal" (click)="selecionEliminar(proyecto.id)" title="Eliminar proyecto"><i class="fa-solid fa-x"></i></button>
+                <button class="btn btn-info me-2" data-bs-toggle="modal" data-bs-target="#editarModal" (click) = "selecionEditar(proyecto.id)" title="Editar proyecto"><i class="fa-solid fa-pencil"></i></button>
+                <button class="btn btn-success" (click) = "abrirTareas(proyecto.id)" title="Tareas del proyecto"><i class="fa-solid fa-list"></i></button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
+      </div>
+      <div class="modal-body">
+        <p>Seguro deseas eliminar este registro?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="btnConfirm" class="btn btn-primary" data-bs-dismiss="modal" (click)="eliminar()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Editar -->
+<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editarform">
+          <div formGroupName="company">
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Titulo:</label>
+              <input type="text" class="form-control" id="recipient-name" formControlName="name" required>
+              <div *ngIf="editarform.get('company.name')?.invalid && editarform.get('company.name')?.touched">
+                <small class="text-danger">El título es requerido</small>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Descripcion:</label>
+              <textarea class="form-control" id="message-text" formControlName="catchPhrase"></textarea>
+            </div>
+          </div>  
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="editarform.invalid" (click)="editarProyecto()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal Nuevo -->
+<div class="modal fade" id="nuevoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nuevo</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="nuevoform">
+          <div formGroupName="company">
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Titulo:</label>
+              <input type="text" class="form-control" id="recipient-name" formControlName="name" required>
+              <div *ngIf="nuevoform.get('company.name')?.invalid">
+                <small class="text-danger">El título es requerido</small>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Descripcion:</label>
+              <textarea class="form-control" id="message-text" formControlName="catchPhrase"></textarea>
+            </div>
+          </div>  
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="nuevoform.invalid" data-bs-dismiss="modal" (click)="nuevoProyecto()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+<br><br><br><br>
+
+
+</body>
+
+<footer>
+  ilian Moises Maussa Ramos
+</footer>
+
+

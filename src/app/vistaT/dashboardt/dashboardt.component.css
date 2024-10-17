@@ -1,0 +1,13 @@
+footer {
+    position: fixed;
+    height: 60px;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+input[type="checkbox"] {
+    width: 2.2em;
+    height: 2.2em;
+}
